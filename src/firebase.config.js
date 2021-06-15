@@ -3,13 +3,13 @@ import 'firebase/auth'
 import 'firebase/firestore'
 
 const firebaseConfig = {
-    apiKey: "AIzaSyDgrcmDZl_-3uSxgzhaTztajEzYhbfjK-s",
-    authDomain: "tutorial-udemy-firebase.firebaseapp.com",
-    projectId: "tutorial-udemy-firebase",
-    storageBucket: "tutorial-udemy-firebase.appspot.com",
-    messagingSenderId: "121963524917",
-    appId: "1:121963524917:web:25fa864a923e733816d27c",
-    measurementId: "G-EZ6RZ7XV69"
+    apiKey: process.ENV,
+    authDomain: process.ENV,
+    projectId: process.ENV,
+    storageBucket: process.ENV,
+    messagingSenderId: process.ENV,
+    appId: process.ENV,
+    measurementId: process.ENV
   };
 
 const fire = firebase.initializeApp(firebaseConfig)
