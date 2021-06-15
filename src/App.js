@@ -1,24 +1,47 @@
-import logo from './logo.svg';
+import { useState, useEffect } from 'react'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import Menu from './componets/Menu'
+import Inicio from './componets/Inicio';
+import Login from './componets/Login';
+import Admin from './componets/Admin';
+import { auth } from './firebase.config'
 import './App.css';
+import Form from './componets/Form';
 
 function App() {
+
+  const [usuario, setUsuario] = useState(null)
+  useEffect(() => {
+      auth.onAuthStateChanged((user => {
+          if(user) {
+              setUsuario(user.email)
+          }
+      }))
+  }, [])
+
+  const cerrarSesion = async() => {
+      auth.signOut()
+      setUsuario(null)
+      
+  }
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <div className='container'>
+      <Router>
+        <Menu usuario={usuario} setUsuario={setUsuario} cerrarSesion={cerrarSesion} />
+        <Switch>
+          <Route exact path='/' render={(props) => (
+            <Inicio {...props} usuario={usuario}/>)} 
+          />
+          <Route exact path='/login' render={(routeProps) => (
+            <Login {...routeProps} usuario={usuario} cerrarSesion={cerrarSesion}/>)}  
+          />
+          <Route exact path='/admin' component={Admin} />
+          <Route exact path='/form' component={Form} />
+        </Switch>
+      </Router>
+      </div>
   );
 }
 
